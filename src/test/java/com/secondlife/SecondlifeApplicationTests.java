@@ -1,0 +1,13 @@
+package com.secondlife;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@SpringBootTest
+class SecondlifeApplicationTests {
+
+	@Test
+	void contextLoads() {
+	}
+
+}
