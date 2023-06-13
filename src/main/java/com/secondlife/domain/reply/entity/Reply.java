@@ -1,26 +1,22 @@
-package com.secondlife.domain.comment.entity;
+package com.secondlife.domain.reply.entity;
 
 
+import com.secondlife.domain.comment.entity.Comment;
 import com.secondlife.domain.global.BaseTimeEntity;
-import com.secondlife.domain.post.entity.Post;
-import com.secondlife.domain.reply.entity.Reply;
 import com.secondlife.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
-import java.util.List;
-
 
 @Getter
 @NoArgsConstructor
 @Entity
-public class Comment extends BaseTimeEntity {
+public class Reply extends BaseTimeEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "comment_id")
+    @Column(name = "reply_id")
     private Long id;
 
     @Column(length = 1000, nullable = false)
@@ -31,16 +27,13 @@ public class Comment extends BaseTimeEntity {
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "post_id")
-    private Post post;
-
-    @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL)
-    private List<Reply> replyList = new ArrayList<>();
+    @JoinColumn(name = "comment_id")
+    private Comment comment;
 
     @Builder
-    public Comment(String content, Post post, User user) {
+    public Reply(String content, Comment comment, User user) {
         this.content = content;
-        this.post = post;
+        this.comment = comment;
         this.user = user;
     }
 
