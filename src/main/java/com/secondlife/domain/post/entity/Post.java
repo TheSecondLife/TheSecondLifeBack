@@ -2,6 +2,7 @@ package com.secondlife.domain.post.entity;
 
 import com.secondlife.domain.comment.entity.Comment;
 import com.secondlife.domain.global.BaseTimeEntity;
+import com.secondlife.domain.post.dto.request.PostUpdateRequestDto;
 import com.secondlife.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -42,6 +43,7 @@ public class Post extends BaseTimeEntity {
 
     @Builder
     public Post(String title, String content, User user, String img, Category category) {
+
         this.title = title;
         this.content = content;
         this.user = user;
@@ -49,7 +51,18 @@ public class Post extends BaseTimeEntity {
         this.category = category;
     }
 
+    public Long update(PostUpdateRequestDto postUpdateRequestDto) {
+
+        this.title = postUpdateRequestDto.getTitle();
+        this.content = postUpdateRequestDto.getContent();
+        this.img = postUpdateRequestDto.getImg();
+        this.category = postUpdateRequestDto.getCategory();
+
+        return this.id;
+    }
+
     public void update(String title, String content, String img, Category category) {
+
         this.title = title;
         this.content = content;
         this.img = img;
