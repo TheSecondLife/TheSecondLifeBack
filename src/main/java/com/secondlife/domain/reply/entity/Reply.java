@@ -3,12 +3,12 @@ package com.secondlife.domain.reply.entity;
 
 import com.secondlife.domain.comment.entity.Comment;
 import com.secondlife.domain.global.BaseTimeEntity;
+import com.secondlife.domain.reply.dto.request.ReplyUpdateRequestDto;
 import com.secondlife.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
 
 @Getter
 @NoArgsConstructor
@@ -37,8 +37,14 @@ public class Reply extends BaseTimeEntity {
         this.user = user;
     }
 
+    public Long update(ReplyUpdateRequestDto replyUpdateRequestDto) {
+
+        this.content = replyUpdateRequestDto.getContent();
+
+        return this.id;
+    }
+
     public void update(String content) {
         this.content = content;
     }
-
 }
