@@ -1,4 +1,4 @@
-package com.secondlife.domain.user.entity;
+package com.secondlife.domain.user.entity.enums;
 
 import jakarta.persistence.Entity;
 import lombok.AccessLevel;
