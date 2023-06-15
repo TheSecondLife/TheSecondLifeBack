@@ -1,9 +1,8 @@
 package com.secondlife.domain.user.dto.request;
 
 
-import com.secondlife.domain.user.entity.Grade;
+import com.secondlife.domain.user.entity.enums.Grade;
 import com.secondlife.domain.user.entity.User;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -22,7 +21,7 @@ public class UserEnterRequestDto {
     private final Grade grade = Grade.떡잎;
     private final String profileImg = "https://fitsta-bucket.s3.ap-northeast-2.amazonaws.com/profile_default.jpg";
 
-    public void hashing(String hashPassword) {
+    public void hashingPassword(String hashPassword) {
         this.password = hashPassword;
     }
 
@@ -31,4 +30,5 @@ public class UserEnterRequestDto {
                 .requestDto(this)
                 .build();
     }
+
 }

@@ -1,4 +1,4 @@
 package com.secondlife.domain.user.api;
 
-public class KakaoUserController {
+public class KakaoController {
 }
