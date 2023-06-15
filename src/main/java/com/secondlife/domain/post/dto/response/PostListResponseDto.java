@@ -2,7 +2,7 @@ package com.secondlife.domain.post.dto.response;
 
 import com.secondlife.domain.post.entity.Category;
 import com.secondlife.domain.post.entity.Post;
-import com.secondlife.domain.user.entity.Grade;
+import com.secondlife.domain.user.entity.enums.Grade;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;

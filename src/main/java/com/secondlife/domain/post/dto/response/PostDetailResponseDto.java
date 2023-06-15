@@ -4,7 +4,7 @@ import com.secondlife.domain.comment.dto.response.CommentListResponseDto;
 import com.secondlife.domain.comment.entity.Comment;
 import com.secondlife.domain.post.entity.Category;
 import com.secondlife.domain.post.entity.Post;
-import com.secondlife.domain.user.entity.Grade;
+import com.secondlife.domain.user.entity.enums.Grade;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
