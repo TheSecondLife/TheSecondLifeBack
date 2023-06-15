@@ -1,7 +1,7 @@
 package com.secondlife.domain.comment.dto.response;
 
 import com.secondlife.domain.comment.entity.Comment;
-import com.secondlife.domain.user.entity.Grade;
+import com.secondlife.domain.user.entity.enums.Grade;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
