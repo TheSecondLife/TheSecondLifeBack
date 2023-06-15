@@ -11,7 +11,6 @@ import java.util.Optional;
 
 public interface CommentRepository extends JpaRepository<Comment, Long> {
 
-//    @Query("select c from Comment c left join c.post p where p.id = :postId")
     List<Comment> findAllCommentListByPostId(@Param("postId") Long postId);
 
     @Override
