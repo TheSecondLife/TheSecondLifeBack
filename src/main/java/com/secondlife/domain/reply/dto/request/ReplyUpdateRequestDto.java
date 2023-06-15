@@ -1,28 +1,30 @@
-package com.secondlife.domain.comment.dto.request;
+package com.secondlife.domain.reply.dto.request;
 
 import com.secondlife.domain.comment.entity.Comment;
-import com.secondlife.domain.post.entity.Post;
+import com.secondlife.domain.reply.entity.Reply;
 import com.secondlife.domain.user.entity.User;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class CommentUpdateRequestDto {
+public class ReplyUpdateRequestDto {
 
     private String content;
 
     private User user;
 
-    private Post post;
+    private Comment comment;
 
-    public Comment toEntity() {
+    @Builder
+    public Reply toEntity() {
 
-        return Comment.builder()
+        return Reply.builder()
                 .content(this.content)
                 .user(this.user)
-                .post(this.post)
+                .comment(this.comment)
                 .build();
     }
 }

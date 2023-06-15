@@ -3,6 +3,7 @@ package com.secondlife.domain.comment.dto.response;
 import com.secondlife.domain.comment.entity.Comment;
 import com.secondlife.domain.user.entity.enums.Grade;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -33,6 +34,7 @@ public class CommentListResponseDto {
 
     private Grade userGrade;
 
+    @Builder
     public CommentListResponseDto(Comment comment) {
 
         this.id = comment.getId();

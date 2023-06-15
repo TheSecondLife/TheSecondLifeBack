@@ -21,11 +21,6 @@ public class PostUpdateRequestDto {
 
     private User user;
 
-    public void setUser(User user) {
-
-        this.user = user;
-    }
-
     public Post toEntity() {
 
         return Post.builder()
