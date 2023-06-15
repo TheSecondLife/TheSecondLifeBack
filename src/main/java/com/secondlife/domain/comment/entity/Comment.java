@@ -1,6 +1,7 @@
 package com.secondlife.domain.comment.entity;
 
 
+import com.secondlife.domain.comment.dto.request.CommentUpdateRequestDto;
 import com.secondlife.domain.global.BaseTimeEntity;
 import com.secondlife.domain.post.entity.Post;
 import com.secondlife.domain.reply.entity.Reply;
@@ -42,6 +43,13 @@ public class Comment extends BaseTimeEntity {
         this.content = content;
         this.post = post;
         this.user = user;
+    }
+
+    public Long update(CommentUpdateRequestDto commentUpdateRequestDto) {
+
+        this.content = commentUpdateRequestDto.getContent();
+
+        return this.id;
     }
 
     public void update(String content) {
