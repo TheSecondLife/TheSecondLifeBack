@@ -4,11 +4,9 @@ import com.secondlife.domain.comment.entity.Comment;
 import com.secondlife.domain.global.BaseTimeEntity;
 import com.secondlife.domain.post.entity.Post;
 import com.secondlife.domain.user.dto.request.UserEnterRequestDto;
+import com.secondlife.domain.user.entity.enums.Grade;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
@@ -16,6 +14,7 @@ import java.util.List;
 @Table(name = "users")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
+@ToString
 public class User extends BaseTimeEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -61,5 +60,21 @@ public class User extends BaseTimeEntity {
         this.nickname = requestDto.getNickname();
         this.profileImg = requestDto.getProfileImg();
         this.grade = requestDto.getGrade();
+    }
+
+    public void updatePassword(String password) {
+        this.password = password;
+    }
+
+    public void updateUserInfo(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public void updateProfileImg(String profileImg) {
+        this.profileImg = profileImg;
+    }
+
+    public void updateGrade(Grade grade) {
+        this.grade = grade;
     }
 }
