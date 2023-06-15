@@ -1,5 +1,6 @@
 package com.secondlife.domain.user.entity;
 
+import com.secondlife.domain.user.entity.enums.Keyword;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
