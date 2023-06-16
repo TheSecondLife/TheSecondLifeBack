@@ -25,8 +25,7 @@ bin/
 out/
 !**/src/main/**/out/
 !**/src/test/**/out/
-/src/main/resources/application-DATABASE.properties
-/src/main/resources/application-S3.properties
+
 ### NetBeans ###
 /nbproject/private/
 /nbbuild/
