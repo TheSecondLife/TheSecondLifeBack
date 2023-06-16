@@ -46,6 +46,9 @@ dependencies {
 
 	// String to Json
 	implementation group: 'org.json', name: 'json', version: '20220924'
+
+	// swagger-ui
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
 }
 
 tasks.named('test') {
