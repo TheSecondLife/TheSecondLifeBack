@@ -4,13 +4,19 @@ import com.secondlife.domain.user.dto.request.UserRequestDto;
 import com.secondlife.domain.user.dto.request.UserEnterRequestDto;
 import com.secondlife.domain.user.entity.User;
 import com.secondlife.domain.user.repository.UserRepository;
+import com.secondlife.util.JWTUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -19,6 +25,10 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final JWTUtil jwtUtil;
+
+    private static final String SUCCESS = "succes";
+    private static final String FAIL = "fail";
 
     // 이메일 중복 검사
     public boolean isExistEmail(String email) {
@@ -31,16 +41,36 @@ public class UserService {
         if (!isAvailable(requestDto.getEmail()))
             return false;
         requestDto.hashingPassword(hashing(requestDto.getPassword()));
-        userRepository.save(requestDto.toEntity());
+//        userRepository.save(requestDto.toEntity());
         return true;
     }
 
     // 로그인
-    public boolean login(UserRequestDto requestDto) {
+    public ResponseEntity<?> login(UserRequestDto requestDto) {
         if (isAvailable(requestDto.getEmail()))
-            return false;
+            return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
         User user = userRepository.findByEmail(requestDto.getEmail()).get();
-        return user.getPassword().equals(hashing(requestDto.getPassword()));
+        if (!user.getPassword().equals(hashing(requestDto.getPassword())))
+            return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+
+        Map<String, Object> result = new HashMap<String, Object>();
+        HttpStatus status;
+        try {
+            result.put("access-token", jwtUtil.createToken(user.getEmail(), user.getPassword()));
+            result.put("message", SUCCESS);
+            result.put("email", user.getEmail());
+            result.put("name", user.getName());
+            result.put("id", user.getId());
+            result.put("age", user.getAge());
+            result.put("nickname", user.getNickname());
+            result.put("profileImg", user.getProfileImg());
+            status = HttpStatus.OK;
+        } catch (UnsupportedEncodingException e) {
+            result.put("message", FAIL);
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+        return new ResponseEntity<Map<String, Object>>(result, status);
+
     }
 
     // 비밀번호 수정
