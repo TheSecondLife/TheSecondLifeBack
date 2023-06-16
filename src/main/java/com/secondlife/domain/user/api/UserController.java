@@ -30,10 +30,7 @@ public class UserController {
     // 로그인
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody UserRequestDto requestDto) {
-        if (userService.login(requestDto)) {
-            return new ResponseEntity<Void>(HttpStatus.OK);
-        }
-        return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+        return userService.login(requestDto);
     }
 
     // 비밀번호 수정
@@ -42,6 +39,7 @@ public class UserController {
         userService.changePassword(requestDto);
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
+
     // 정보수정
 
 

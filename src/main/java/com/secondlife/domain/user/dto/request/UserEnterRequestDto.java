@@ -25,10 +25,10 @@ public class UserEnterRequestDto {
         this.password = hashPassword;
     }
 
-    public User toEntity() {
-        return User.builder()
-                .requestDto(this)
-                .build();
-    }
+//    public User toEntity() {
+//        return User.builder()
+//                .requestDto(this)
+//                .build();
+//    }
 
 }
