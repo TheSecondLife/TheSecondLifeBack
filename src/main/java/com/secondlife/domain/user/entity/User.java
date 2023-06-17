@@ -3,8 +3,7 @@ package com.secondlife.domain.user.entity;
 import com.secondlife.domain.comment.entity.Comment;
 import com.secondlife.domain.global.BaseTimeEntity;
 import com.secondlife.domain.post.entity.Post;
-import com.secondlife.domain.user.dto.request.KakaoUserRequestDto;
-import com.secondlife.domain.user.dto.request.UserEnterRequestDto;
+import com.secondlife.domain.user.dto.KakaoUserEnterDto;
 import com.secondlife.domain.user.entity.enums.Grade;
 import jakarta.persistence.*;
 import lombok.*;
@@ -53,11 +52,11 @@ public class User extends BaseTimeEntity {
     private List<Interest> interestList;
 
     @Builder
-    public User(KakaoUserRequestDto requestDto) {
+    public User(KakaoUserEnterDto requestDto) {
         this.email = requestDto.getEmail();
         this.name = requestDto.getName();
         this.age = requestDto.getAge();
-//        this.password = requestDto.getPassword();
+        this.password = requestDto.getPassword();
         this.nickname = requestDto.getNickname();
         this.profileImg = requestDto.getProfileImg();
         this.grade = requestDto.getGrade();
