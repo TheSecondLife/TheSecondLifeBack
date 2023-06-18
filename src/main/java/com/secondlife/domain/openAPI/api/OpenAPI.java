@@ -1,4 +1,4 @@
-package com.secondlife.domain.openAPI.controller;
+package com.secondlife.domain.openAPI.api;
 
 import com.secondlife.domain.openAPI.dto.OpenAPIRequestDto;
 import com.secondlife.domain.openAPI.service.OpenAPIService;
