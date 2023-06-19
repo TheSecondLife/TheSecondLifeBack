@@ -20,6 +20,10 @@ public class GPTCompletionChatRequestDto {
 
     private Integer maxTokens;
 
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
     public static ChatCompletionRequest of(GPTCompletionChatRequestDto gptCompletionChatRequestDto) {
 
         return ChatCompletionRequest.builder()
