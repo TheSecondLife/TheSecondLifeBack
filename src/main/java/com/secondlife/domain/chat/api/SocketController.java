@@ -20,7 +20,7 @@ public class SocketController {
         System.out.println(chatDto);
         // 연결시 기존방인지 아닌지 확인
 
-        chatRoomService.enterUser();
+//        chatRoomService.enterUser();
 //        chatRoomService.mongoInsert(chatDto);
         simpMessagingTemplate.convertAndSend("/sub/chat/" + chatDto.getRoomId(), chatDto);
     }
