@@ -1,5 +1,6 @@
 package com.secondlife.domain.user.entity;
 
+import com.secondlife.domain.chat.entity.ChatRoom;
 import com.secondlife.domain.comment.entity.Comment;
 import com.secondlife.domain.global.BaseTimeEntity;
 import com.secondlife.domain.post.entity.Post;
@@ -50,6 +51,9 @@ public class User extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Interest> interestList;
+
+    @OneToMany(mappedBy = "userA", cascade = CascadeType.ALL)
+    private List<ChatRoom> chatRoomList;
 
     @Builder
     public User(KakaoUserEnterDto requestDto) {
