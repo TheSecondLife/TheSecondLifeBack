@@ -3,10 +3,7 @@ package com.secondlife.domain.chat.entity;
 import com.secondlife.domain.global.BaseTimeEntity;
 import com.secondlife.domain.user.entity.User;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Getter
 @Table(name = "chatroom")
@@ -29,11 +26,19 @@ public class ChatRoom extends BaseTimeEntity {
     @JoinColumn(name = "user_b")
     private User userB;
 
+    @Column(name = "last_chat")
+    private String lastChat;
+
     @Builder
-    public ChatRoom(String roomId, User userA, User userB) {
+    public ChatRoom(String roomId, User userA, User userB, String lastChat) {
         this.roomId = roomId;
         this.userA = userA;
         this.userB = userB;
+        this.lastChat = lastChat;
+    }
+
+    public void updateLastChat(String lastChat) {
+        this.lastChat = lastChat;
     }
 
 }
