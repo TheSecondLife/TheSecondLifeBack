@@ -17,11 +17,11 @@ public class SocketController {
 
     @MessageMapping("/chat")
     public void sendMessage(TempChatDto chatDto, SimpMessageHeaderAccessor accessor) {
-        System.out.println(chatDto);
+//        System.out.println(chatDto);
         // 연결시 기존방인지 아닌지 확인
 
 //        chatRoomService.enterUser();
-//        chatRoomService.mongoInsert(chatDto);
+        chatRoomService.mongoInsert(chatDto);
         simpMessagingTemplate.convertAndSend("/sub/chat/" + chatDto.getRoomId(), chatDto);
     }
 }
