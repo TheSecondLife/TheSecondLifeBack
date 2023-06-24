@@ -118,7 +118,7 @@ public class ChatRoomService {
         Chat chat = new Chat(dto);
         List<ChatRoom> chatRoom = chatRoomRepository.findByRoomId(dto.getRoomId());
         for (ChatRoom cr : chatRoom) {
-            cr.updateLastChat(dto.getChat());
+            cr.updateLastChat(dto.getContent());
         }
         chatRepository.save(chat);
     }
