@@ -32,6 +32,6 @@ public class Chat {
         this.userId = dto.getUserId();
         this.nickname = dto.getNickname();
         this.profileImg = dto.getProfileImg();
-        this.chat = dto.getChat();
+        this.chat = dto.getContent();
     }
 }
