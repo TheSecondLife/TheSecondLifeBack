@@ -41,6 +41,11 @@ public class PostListResponseDto {
 
     private Grade userGrade;
 
+
+    // Comment
+
+    private long commentCnt;
+
     @Builder
     public PostListResponseDto(Post post) {
 
@@ -56,5 +61,7 @@ public class PostListResponseDto {
         this.userNickName = post.getUser().getNickname();
         this.userProfileImg = post.getUser().getProfileImg();
         this.userGrade = post.getUser().getGrade();
+
+        this.commentCnt = post.getCommentList().size();
     }
 }
