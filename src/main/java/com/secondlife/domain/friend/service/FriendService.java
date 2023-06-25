@@ -47,21 +47,15 @@ public class FriendService {
 
     // 친구 요청
     @Transactional
-    public ResponseEntity<?> requestFriend(Long requestUserId, Long responseUserId) {
+    public long requestFriend(Long requestUserId, Long responseUserId) {
 
         // 만약 이미 친구 관계라면 - 요청 불가능
         if(checkFriend(requestUserId, responseUserId))
-            return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+            return -1;
 
         // 만약 내가 그 전에 먼저 상대방에게 친구 요청을 했었다면 - 요청 불가능
         else if(checkFriendRequest(requestUserId, responseUserId))
-            return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
-
-        // 만약 상대방이 그 전에 먼저 나한테 친구 요청을 했었다면 - 친구관계 완성
-        else if(checkFriendRequest(responseUserId, requestUserId)) {
-            acceptFriendRequest(responseUserId, requestUserId)
-//            return new ResponseEntity<Long>(friendRequest.getId(), HttpStatus.OK);
-        }
+            return -1;
 
         User requestUser = userRepository.findById(requestUserId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 User가 존재하지 않습니다."));
@@ -75,22 +69,63 @@ public class FriendService {
 
         friendRepository.save(friendRequest);
 
-        return new ResponseEntity<Long>(friendRequest.getId(), HttpStatus.OK);
+        return friendRequest.getId();
     }
 
     // 친구 요청 수락
     @Transactional
-    public ResponseEntity<?> acceptFriendRequest(Long myId, Long yourId) {
+    public long acceptFriendRequest(Long myId, Long yourId) {
 
         // 이미 친구 관계이거나, 상대방이 친구 요청을 한 기록이 없는 경우 - 수락 불가능
         if(checkFriend(myId, yourId) || !checkFriendRequest(yourId, myId))
-            return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+            return -1;
 
         // Friend 테이블에 있었던 기존 친구 요청의 areWeFriend => true로 변경
         Friend friendRequest = friendRepository.findFriendRequestByRequestUserIdAndResponseUserId(yourId, myId).get();
         friendRequest.acceptFriendRequest();
 
-        // 내가 상대방에게 요청했고 areWeFriend가 true인 column 삽입
-        
+        // 내가 상대방에게 요청했고 areWeFriend가 true인 column 강제 삽입
+        requestFriend(myId, yourId);
+
+        Friend friendRequest2 = friendRepository.findFriendRequestByRequestUserIdAndResponseUserId(myId, yourId).get();
+        friendRequest2.acceptFriendRequest();
+
+        return friendRequest2.getId();
+    }
+
+    // 친구 요청 거절
+    @Transactional
+    public long refuseFriendRequest(Long myId, Long yourId) {
+
+        // 이미 친구 관계이거나, 상대방이 친구 요청을 한 기록이 없는 경우 - 거절 불가능
+        if(checkFriend(myId, yourId) || !checkFriendRequest(yourId, myId))
+            return -1;
+
+        Friend friendRequest = friendRepository.findFriendRequestByRequestUserIdAndResponseUserId(yourId, myId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 친구 요청이 없습니다."));
+
+        friendRepository.deleteById(friendRequest.getId());
+
+        return friendRequest.getId();
+    }
+
+    // 친구 삭제 - 순서 상관 X
+    @Transactional
+    public long deleteFriend(Long myId, Long yourId) {
+
+        // 친구 관계가 아니거나, 상대방이 친구 요청을 한 기록이 없는 경우, 내가 친구 요청을 한 기록이 없는 경우 - 거절 불가능
+        if(!checkFriend(myId, yourId) || !checkFriendRequest(yourId, myId) || !checkFriendRequest(myId, yourId))
+            return -1;
+
+        Friend friendRequest = friendRepository.findFriendRequestByRequestUserIdAndResponseUserId(yourId, myId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 친구 요청이 없습니다."));
+
+        Friend friendRequest2 = friendRepository.findFriendRequestByRequestUserIdAndResponseUserId(myId, yourId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 친구 요청이 없습니다."));
+
+        friendRepository.deleteById(friendRequest.getId());
+        friendRepository.deleteById(friendRequest2.getId());
+
+        return 0;
     }
 }

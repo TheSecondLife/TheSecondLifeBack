@@ -2,8 +2,10 @@ package com.secondlife.domain.user.entity;
 
 import com.secondlife.domain.chat.entity.ChatRoom;
 import com.secondlife.domain.comment.entity.Comment;
+import com.secondlife.domain.friend.entity.Friend;
 import com.secondlife.domain.global.BaseTimeEntity;
 import com.secondlife.domain.post.entity.Post;
+import com.secondlife.domain.reply.entity.Reply;
 import com.secondlife.domain.user.dto.KakaoUserEnterDto;
 import com.secondlife.domain.user.entity.enums.Grade;
 import jakarta.persistence.*;
@@ -50,10 +52,19 @@ public class User extends BaseTimeEntity {
     private List<Comment> commentList;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Reply> replyList;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Interest> interestList;
 
     @OneToMany(mappedBy = "userA", cascade = CascadeType.ALL)
     private List<ChatRoom> chatRoomList;
+
+    @OneToMany(mappedBy = "requestUser", cascade = CascadeType.ALL)
+    private List<Friend> requestFriendList;
+
+    @OneToMany(mappedBy = "responseUser", cascade = CascadeType.ALL)
+    private List<Friend> responseFriendList;
 
     @Builder
     public User(KakaoUserEnterDto requestDto) {

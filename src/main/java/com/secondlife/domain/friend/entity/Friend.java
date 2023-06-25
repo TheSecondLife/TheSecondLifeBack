@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @Getter
 public class Friend extends BaseTimeEntity {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "friend_id")
     private Long id;
 
