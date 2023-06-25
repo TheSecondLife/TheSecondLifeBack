@@ -26,6 +26,6 @@ public interface FriendRepository extends JpaRepository<Friend, Long> {
 
     @Query("select new com.secondlife.domain.friend.dto.response.FriendResponseDto(f.responseUser)  " +
             "from Friend f " +
-            "where f.areWeFriend = false and f.requestUser.id = :userId")
+            "where f.areWeFriend = true and f.requestUser.id = :userId")
     List<FriendResponseDto> findFriendListByUserId(@Param("userId") Long userId);
 }
