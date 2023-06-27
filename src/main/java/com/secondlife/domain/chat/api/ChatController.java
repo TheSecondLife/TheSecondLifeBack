@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequiredArgsConstructor
@@ -28,6 +29,12 @@ public class ChatController {
 
     @PostMapping()
     public ResponseEntity<?> enterChatRoom(@RequestBody ChatRoomEnterRequrstDto requrstDto) {
+        if (requrstDto.getUserA() == null || requrstDto.getUserB() == null) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        if (Objects.equals(requrstDto.getUserA(), requrstDto.getUserB())) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
         ChatRoomEnterDto result = chatRoomService.enterUser(requrstDto);
         return new ResponseEntity<ChatRoomEnterDto>(result, HttpStatus.OK);
     }

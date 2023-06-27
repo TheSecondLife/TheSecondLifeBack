@@ -115,11 +115,14 @@ public class ChatRoomService {
 
     @Transactional
     public void mongoInsert(TempChatDto dto) {
+        // 몽고디비 저장
         Chat chat = new Chat(dto);
+        chatRepository.save(chat);
+
+        // 방정보
         List<ChatRoom> chatRoom = chatRoomRepository.findByRoomId(dto.getRoomId());
         for (ChatRoom cr : chatRoom) {
             cr.updateLastChat(dto.getContent());
         }
-        chatRepository.save(chat);
     }
 }
