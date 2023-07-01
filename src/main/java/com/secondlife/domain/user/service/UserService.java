@@ -1,5 +1,7 @@
 package com.secondlife.domain.user.service;
 
+import com.secondlife.domain.global.service.S3UploadService;
+import com.secondlife.domain.user.dto.request.UserInfoChangeRequestDto;
 import com.secondlife.domain.user.dto.request.UserRequestDto;
 import com.secondlife.domain.user.dto.request.UserEnterRequestDto;
 import com.secondlife.domain.user.entity.User;
@@ -10,7 +12,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
@@ -29,6 +33,8 @@ public class UserService {
 
     private static final String SUCCESS = "succes";
     private static final String FAIL = "fail";
+
+    private final S3UploadService s3UploadService;
 
     // 이메일 중복 검사
     public boolean isExistEmail(String email) {
@@ -74,16 +80,27 @@ public class UserService {
     }
 
     // 비밀번호 수정
+    @Transactional
     public void changePassword(UserRequestDto requestDto) {
         User user = userRepository.findByEmail(requestDto.getEmail()).get();
         user.updatePassword(hashing(requestDto.getPassword()));
     }
 
-    // 정보 수정(비밀번호x, 프로필사진x)
-
+    // 정보 수정(이름, 닉네임)
+    @Transactional
+    public void changeUserInfo(UserInfoChangeRequestDto requestDto) {
+        User user = userRepository.findUserById(requestDto.getUserId());
+        user.updateUserInfo(requestDto.getName(), requestDto.getNickname());
+    }
 
     // 프로필사진 변경
-
+    @Transactional
+    public String changeUserProfileImg(MultipartFile multipartFile, Long userId) throws IOException {
+        String profile = s3UploadService.upload(multipartFile);
+        User user = userRepository.findUserById(userId);
+        user.updateProfileImg(profile);
+        return profile;
+    }
 
     // 비밀번호 암호화
     private String hashing(String password) {
