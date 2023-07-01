@@ -1,5 +1,6 @@
 package com.secondlife.domain.post.service;
 
+import com.secondlife.domain.global.service.S3UploadService;
 import com.secondlife.domain.post.dto.request.PostRegistRequestDto;
 import com.secondlife.domain.post.dto.request.PostUpdateRequestDto;
 import com.secondlife.domain.post.dto.response.PostDetailResponseDto;
@@ -11,7 +12,9 @@ import com.secondlife.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +26,8 @@ public class PostService {
     private final PostRepository postRepository;
 
     private final UserRepository userRepository;
+
+    private final S3UploadService s3UploadService;
 
     // Id로 Post 조회
     public PostDetailResponseDto findPostById(Long id) {
@@ -54,6 +59,26 @@ public class PostService {
                 .orElseThrow(() -> new IllegalArgumentException("해당 user가 존재하지 않습니다."));
 
         postRegistRequestDto.setUser(findUser);
+
+        Post registPost = postRegistRequestDto.toEntity();
+
+        postRepository.save(registPost);
+
+        return registPost.getId();
+    }
+
+    // post 등록 + 사진
+    @Transactional
+    public Long registPostWithImg(Long userId, PostRegistRequestDto postRegistRequestDto, MultipartFile multipartFile) throws IOException {
+
+        User findUser = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 user가 존재하지 않습니다."));
+
+        postRegistRequestDto.setUser(findUser);
+
+        String profile = s3UploadService.upload(multipartFile);
+
+        postRegistRequestDto.setURL(profile);
 
         Post registPost = postRegistRequestDto.toEntity();
 
