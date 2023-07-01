@@ -2,10 +2,14 @@ package com.secondlife.domain.post.api;
 
 import com.secondlife.domain.post.dto.request.PostRegistRequestDto;
 import com.secondlife.domain.post.dto.request.PostUpdateRequestDto;
+import com.secondlife.domain.post.entity.Category;
 import com.secondlife.domain.post.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @CrossOrigin("*")
 @RestController
@@ -36,6 +40,22 @@ public class PostController {
     public ResponseEntity<?> registPost(@PathVariable("userId") Long userId, @RequestBody PostRegistRequestDto postRegistRequestDto) {
 
         Long registId = postService.registPost(userId, postRegistRequestDto);
+
+        return ResponseEntity.ok()
+                .body(registId);
+    }
+
+    // post 등록 + 이미지
+    @PostMapping("registimg/{userId}")
+    public ResponseEntity<?> registPost(
+            @PathVariable("userId") Long userId,
+            @RequestParam(value = "file") MultipartFile multipartFile,
+            @RequestParam(value = "title") String title,
+            @RequestParam(value = "content") String content,
+            @RequestParam(value = "category") Category category) throws IOException {
+        PostRegistRequestDto dto = new PostRegistRequestDto();
+        dto.setInfo(title, content, category);
+        Long registId = postService.registPostWithImg(userId, dto, multipartFile);
 
         return ResponseEntity.ok()
                 .body(registId);
