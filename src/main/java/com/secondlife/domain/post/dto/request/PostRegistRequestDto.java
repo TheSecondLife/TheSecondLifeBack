@@ -6,9 +6,11 @@ import com.secondlife.domain.user.entity.User;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
+@ToString
 public class PostRegistRequestDto {
 
     private String title;
@@ -20,6 +22,16 @@ public class PostRegistRequestDto {
     private Category category;
 
     private User user;
+
+    public void setInfo(String title, String content, Category category) {
+        this.title = title;
+        this.content = content;
+        this.category = category;
+    }
+
+    public void setURL(String img) {
+        this.img = img;
+    }
 
     public void setUser(User user) {
 
