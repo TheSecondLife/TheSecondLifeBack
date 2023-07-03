@@ -2,6 +2,7 @@ package com.secondlife.util;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.UnsupportedEncodingException;
@@ -10,7 +11,8 @@ import java.util.Date;
 @Component
 public class JWTUtil {
 
-    private static final String SALT = "SecondLife";
+    @Value("${jwt-secret}")
+    private String SALT;
 
     public String createToken(String claimId, String data) throws UnsupportedEncodingException {
         return Jwts.builder()
