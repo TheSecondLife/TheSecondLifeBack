@@ -40,6 +40,7 @@ public class KakaoLoginService {
 
     @Value("${kakao-client}")
     private String CLIENT;
+
     @Value("${kakao-secret}")
     private String SECRET;
 
