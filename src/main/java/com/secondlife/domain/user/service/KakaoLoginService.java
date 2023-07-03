@@ -11,6 +11,7 @@ import com.secondlife.domain.user.entity.User;
 import com.secondlife.domain.user.repository.UserRepository;
 import com.secondlife.util.JWTUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,7 +25,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -37,6 +37,11 @@ public class KakaoLoginService {
 
     private static final String SUCCESS = "succes";
     private static final String FAIL = "fail";
+
+    @Value("${kakao-client}")
+    private String CLIENT;
+    @Value("${kakao-secret}")
+    private String SECRET;
 
     @Transactional
     public ResponseEntity<?> kakaoLogin(KakaoCodeRequestDto requestDto){
@@ -89,7 +94,6 @@ public class KakaoLoginService {
 
     public String getAccessToken(KakaoCodeRequestDto requestDto) {
 
-        KEY key = new KEY();
         String code = requestDto.getCode();
         String redirect_uri = requestDto.getRedirect();
 
@@ -100,8 +104,8 @@ public class KakaoLoginService {
         // HTTP Body 생성
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
         body.add("grant_type", "authorization_code");
-        body.add("client_id", key.getClient());
-        body.add("client_secret", key.getSecret());
+        body.add("client_id", CLIENT);
+        body.add("client_secret", SECRET);
         body.add("redirect_uri", redirect_uri);
         body.add("code", code);
 
